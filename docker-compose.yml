@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  django:
+    build: ./api/
+    container_name: api
+    restart: always
+    ports:
+      - "0.0.0.0:8001:8001"
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8001"
+    depends_on:
+      - postgres
+    volumes:
+      - ./api:/usr/src/app/
+      - ./django_static_volume:/usr/src/app/Static
+      - ./django_media_volume:/usr/src/app/Media
+    networks:
+      - myNetwork
+    env_file:
+      - ./.env
+
+  node:
+    build: ./client
+    container_name: client
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client/public/:/usr/src/app/public/
+      - ./client/src/:/usr/src/app/src/
+    command: npm start
+    depends_on:
+      - django
+    networks:
+      - myNetwork
+
+  postgres:
+    image: postgres
+    container_name: tcmdb
+    volumes:
+      - ./postgres_volume:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=alkokovad
+      - POSTGRES_PASSWORD=tcmunipass
+      - POSTGRES_DB=tcmdb
+    networks:
+      - myNetwork
+    ports:
+      - 5432:5432
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    networks:
+      - myNetwork
+    ports:
+      - 80:80
+    depends_on:
+      - django
+    volumes:
+      - ./django_static_volume:/home/src/app/Static
+      - ./django_media_volume:/home/src/app/Media
+
+# создаём два volume для статики
+volumes:
+  postgres_volume:
+  django_static_volume:
+  django_media_volume:
+
+networks:
+  myNetwork:
+    driver: bridge
