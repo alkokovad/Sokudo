@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Meet
 
-# Register your models here.
+
+@admin.register(Meet)
+class MeetAdmin(admin.ModelAdmin):
+    pass
