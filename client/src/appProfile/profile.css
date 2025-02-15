@@ -1,0 +1,19 @@
+.profile_btn {
+  display: flex;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  padding: 0;
+  bottom: 30px;
+  left: 30px;
+}
+.profile_btn .profile_pic {
+  background-color: black;
+  height: 64px;
+  width: 64px;
+  border-radius: 32px;
+  border: none;
+  z-index: 6;
+}
+
+/*# sourceMappingURL=profile.css.map */

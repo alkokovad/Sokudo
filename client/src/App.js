@@ -1,6 +1,7 @@
 import './App.css';
 import {Fragment, useEffect, useState} from "react";
-// import Header from "./appHeader/Header";
+import Mapping from "./appMapping/Mapping";
+import Profile from "./appProfile/Profile";
 import axios from "axios";
 import {API_URL} from "./index";
 
@@ -15,9 +16,14 @@ function App() {
         axios.get(API_URL).then(data => setContent(data.data))
     }
 
+    const resetState = () => {
+        getContent();
+    };
+
     return (
         <Fragment>
-            <iframe title="map" srcdoc={content}></iframe>
+            <Mapping content={content} resetState={resetState} />
+            <Profile content={content} resetState={resetState} />
         </Fragment>
     );
 }

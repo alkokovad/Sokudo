@@ -1,0 +1,22 @@
+.profile_btn {
+  display: flex;
+  border: none;
+  //width: 96px;
+  //height: 96px;
+  //border-radius: 48px 48px 48px 32px;
+  background-color: transparent;
+  position: absolute;
+  padding: 0;
+  bottom: 30px;
+  left: 30px;
+
+  .profile_pic {
+    background-color: black;
+    height: 64px;
+    width: 64px;
+    border-radius: 32px;
+    border: none;
+    z-index: 6;
+    //margin: auto auto 0 0;
+  }
+}

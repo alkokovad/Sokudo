@@ -4,11 +4,28 @@ from rest_framework import status
 from .serializers import *
 from .models import Meet
 import folium
+import base64
 
 
 @api_view(['GET', 'POST'])
 def service(request):
-    m = folium.Map(location=(59.945502, 30.311220), tiles="cartodb positron").get_root().render()
+    m = folium.Map(location=[59.945502, 30.311220], tiles="Cartodb dark_matter", zoom_control=False, attributionControl=0)
+
+#     icon = folium.CustomIcon(
+#         icon_image,
+#         icon_size=(512, 512),
+#         icon_anchor=(0, 0),
+#         popup_anchor=(-3, -76),
+#     )
+    kw = {"prefix": "fa", "color": "green", "icon": "arrow-up"}
+
+    angle = 180
+    icon = folium.Icon(angle=angle, **kw)
+
+    mark = folium.Marker(
+        location=[60.012433, 30.323237], icon=icon, tooltip=str(angle)
+    ).add_to(m)
+    m = m.get_root().render()
     if request.method == 'GET':
         data = Meet.objects.all()
         serializer = MeetSerializer(data, context={'request': request}, many=True)
